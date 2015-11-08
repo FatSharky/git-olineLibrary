@@ -7,7 +7,18 @@
         <h:outputStylesheet library="css" name="style_index.css"/>
     </h:head>
     <h:body>
-       
+        <div class="main">
+            <div class="logo">
+                <h:graphicImage library="images" name="bntu.png"/>
+                <p>#{msg.welcome_title}</p>
+            </div>
+            <div class="login">
+                <p>#{msg.index_input_info}</p>
+                <h:form styleClass="login_form">
+                    #{msg.index_input_name}<h:inputText id="username" value="#{user.userName}"/>
+                </h:form>
+            </div>
+        </div>
     </h:body>
 </html>
 
