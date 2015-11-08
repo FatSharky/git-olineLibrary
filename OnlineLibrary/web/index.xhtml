@@ -19,6 +19,8 @@
                     #{msg.index_input_name}<h:inputText id="username" value="#{user.userName}" required="true" requiredMessage="#{msg.login_required}">
                     <f:validator validatorId="by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.validators.LoginValidator"/>
                     </h:inputText>
+                    <h:commandButton action="#{loginController.login()}" value="#{msg.entry}"/>
+                    <p><h:message for="username" styleClass="error"/></p>
                 </h:form>
             </div>
         </div>
