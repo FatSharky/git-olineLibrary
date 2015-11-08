@@ -6,14 +6,14 @@
 package by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.beans;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 
 /**
  *
  * @author Vladislav
  */
 @ManagedBean
-@RequestScoped
+@SessionScoped
 public class User {
 
     private String userName;
