@@ -16,8 +16,9 @@
             <div class="login">
                 <p>#{msg.index_input_info}</p>
                 <h:form styleClass="login_form">
-                    #{msg.index_input_name}<h:inputText id="username" value="#{user.userName}" required="true" requiredMessage="#{msg.login_required}"/>
+                    #{msg.index_input_name}<h:inputText id="username" value="#{user.userName}" required="true" requiredMessage="#{msg.login_required}">
                     <f:validator validatorId="by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.validators.LoginValidator"/>
+                    </h:inputText>
                 </h:form>
             </div>
         </div>
