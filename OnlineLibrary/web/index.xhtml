@@ -15,7 +15,7 @@
             <div class="login">
                 <p>#{msg.index_input_info}</p>
                 <h:form styleClass="login_form">
-                    #{msg.index_input_name}<h:inputText id="username" value="#{user.userName}"/>
+                    #{msg.index_input_name}<h:inputText id="username" value="#{user.userName}" required="true" requiredMessage="#{msg.login_required}"/>
                 </h:form>
             </div>
         </div>
