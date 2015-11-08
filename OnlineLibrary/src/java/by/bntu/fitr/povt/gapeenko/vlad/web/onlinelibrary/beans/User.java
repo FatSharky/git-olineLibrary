@@ -16,10 +16,23 @@ import javax.faces.bean.RequestScoped;
 @RequestScoped
 public class User {
 
-    /**
-     * Creates a new instance of User
-     */
+    private String userName;
+    
     public User() {
+    }
+
+    /**
+     * @return the userName
+     */
+    public String getUserName() {
+        return userName;
+    }
+
+    /**
+     * @param userName the userName to set
+     */
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
     
 }
