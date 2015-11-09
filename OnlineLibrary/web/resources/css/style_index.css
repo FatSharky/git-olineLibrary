@@ -42,3 +42,9 @@ body{
 .username input{
     margin: 5px 0 0 20px;
 }
+
+.error{
+    color: #ff0000;
+    font-style:  italic;
+    font-size: 12px;
+}
