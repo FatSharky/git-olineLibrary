@@ -5,19 +5,11 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Facelet Title</title>
+        <h:outputStylesheet library="css" name="style_main.css"  />
     </h:head>
     <h:body>
-        <ui:composition template="/templates/library_template.xhtml">
-
-
-            <ui:define name="title">
-                #{msg.book_list}
-            </ui:define>
-
-            <ui:define name="content">
-                #{param.genre_id}
-            </ui:define>
-
+        <ui:composition>
+            content
         </ui:composition>
     </h:body>
 </html>
