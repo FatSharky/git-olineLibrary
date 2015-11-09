@@ -5,6 +5,7 @@
  */
 package by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.beans;
 
+import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
@@ -14,7 +15,7 @@ import javax.faces.bean.SessionScoped;
  */
 @ManagedBean
 @SessionScoped
-public class Genre {
+public class Genre implements Serializable{
 
     private String name;
     private long id;
