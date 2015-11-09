@@ -24,7 +24,7 @@ public class SearchController {
     private static final Map<String, SearchType> searchList = new HashMap<>();
 
     public SearchController() {
-        ResourceBundle bundle = ResourceBundle.getBundle("by.bntu.fitr.povt.gapeenko.web.library.nls.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+        ResourceBundle bundle = ResourceBundle.getBundle("by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.nls.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
         searchList.put(bundle.getString("author_name"), SearchType.AUTHOR);
         searchList.put(bundle.getString("book_name"), SearchType.TITLE);
     }
