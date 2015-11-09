@@ -211,6 +211,7 @@ a:hover, a:active, a:focus {
 
 .book_image{
     height: 260px;
+    width: 260px;
     float:left;
 
 }
@@ -244,4 +245,8 @@ a:hover, a:active, a:focus {
     float: left;
     padding: 3px;
     margin:3px;
+}
+
+.clear{
+    clear: both;
 }
