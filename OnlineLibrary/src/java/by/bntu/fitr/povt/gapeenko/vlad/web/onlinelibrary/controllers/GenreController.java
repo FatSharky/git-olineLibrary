@@ -6,7 +6,6 @@
 package by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.controllers;
 
 import by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.beans.Genre;
-import by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.beans.Genres;
 import by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.db.Database;
 import java.io.Serializable;
 import java.sql.Connection;
@@ -68,7 +67,7 @@ public class GenreController implements Serializable {
                     conn.close();
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(Genres.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(GenreController.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         }
