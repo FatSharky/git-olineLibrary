@@ -19,6 +19,7 @@
         <navigation-case>
             <from-outcome>books</from-outcome>
             <to-view-id>/pages/books.xhtml</to-view-id>
+            <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
@@ -26,6 +27,7 @@
         <navigation-case>
             <from-outcome>exit</from-outcome>
             <to-view-id>/index.xhtml</to-view-id>
+            <redirect />
         </navigation-case>
     </navigation-rule>
 </faces-config>
