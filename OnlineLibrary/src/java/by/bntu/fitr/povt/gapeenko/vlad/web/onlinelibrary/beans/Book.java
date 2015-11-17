@@ -5,11 +5,13 @@
  */
 package by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.beans;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Vladislav
  */
-public class Book {
+public class Book implements Serializable{
     private long id;
     private String name;
     private byte[] content;
