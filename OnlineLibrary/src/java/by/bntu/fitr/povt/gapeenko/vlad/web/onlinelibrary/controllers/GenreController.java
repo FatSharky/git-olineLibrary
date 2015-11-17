@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.beans;
+package by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.controllers;
 
+import by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.beans.Genre;
 import by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.db.Database;
 import java.io.Serializable;
 import java.sql.Connection;
@@ -14,28 +15,32 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 
 /**
  *
  * @author Vladislav
  */
-@ManagedBean
-@SessionScoped
-public class Genres implements Serializable{
+@ManagedBean(eager = true)
+@ApplicationScoped
+public class GenreController implements Serializable {
 
+    private ArrayList<Genre> genreList;
 
-    private final ArrayList<Genre> genreList;
-
-    public Genres() {
-        this.genreList = new ArrayList<>();
+    /**
+     * Creates a new instance of GenreController
+     */
+    public GenreController() {
+        fillGenresAll();
     }
 
-    private ArrayList<Genre> getGenres() {
+    private void fillGenresAll() {
         Statement stmt = null;
         ResultSet rs = null;
         Connection conn = null;
+
+        genreList = new ArrayList<>();
         try {
             conn = Database.getConnection();
 
@@ -45,11 +50,11 @@ public class Genres implements Serializable{
                 Genre genre = new Genre();
                 genre.setName(rs.getString("name"));
                 genre.setId(rs.getLong("id"));
-                genreList.add(genre);
+                getGenreList().add(genre);
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(Genres.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GenreController.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
                 if (stmt != null) {
@@ -62,20 +67,18 @@ public class Genres implements Serializable{
                     conn.close();
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(Genres.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(GenreController.class.getName()).log(Level.SEVERE, null, ex);
             }
+
         }
 
+    }
+
+    /**
+     * @return the genreList
+     */
+    public ArrayList<Genre> getGenreList() {
         return genreList;
     }
 
-    public ArrayList<Genre> getGenreList() {
-        System.out.println("asdasd");
-        if (!genreList.isEmpty()) {
-            return genreList;
-        } else {
-            return getGenres();
-        }
-    }
-    
 }

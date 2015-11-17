@@ -30,6 +30,25 @@
                     </h:selectOneMenu>
                 </h:form>
             </div>
+            
+           <div class="letters">
+                <h:form>
+                    <ui:repeat value="#{searchController.russianLetters}" var="letter">
+
+
+                        <h:commandLink action="#{searchController.fillBooksByLetter()}" value="#{letter}">
+
+                            <f:param name="letter" value="#{letter}" />
+
+                        </h:commandLink>
+
+
+
+
+                    </ui:repeat>
+                </h:form>
+
+            </div> 
         </ui:composition> 
     </h:body>
 </html>
