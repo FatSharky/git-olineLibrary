@@ -40,12 +40,12 @@ public class GenreController implements Serializable {
         ResultSet rs = null;
         Connection conn = null;
 
-        genreList = new ArrayList<Genre>();
+        genreList = new ArrayList<>();
         try {
             conn = Database.getConnection();
 
             stmt = conn.createStatement();
-            rs = stmt.executeQuery("select * from genre by name");
+            rs = stmt.executeQuery("select * from genre order by name");
             while (rs.next()) {
                 Genre genre = new Genre();
                 genre.setName(rs.getString("name"));
