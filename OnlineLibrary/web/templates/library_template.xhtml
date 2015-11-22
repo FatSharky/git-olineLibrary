@@ -8,39 +8,51 @@
         <h:outputStylesheet library="css" name="style_main.css"/>
     </h:head>
     <h:body>
-
         <div class="container">
+
             <div class="header">
                 <ui:insert name="header">
                     <ui:include src="/templates/header.xhtml"/>
-                </ui:insert>
+                </ui:insert>                 
             </div>
 
             <div class="middle">
+
                 <div class="left_menu">
-                    <ui:insert name="left_mnu">
+                    <ui:insert name="left_menu">
                         <ui:include src="/templates/left_menu.xhtml"/>
-                    </ui:insert>
+                    </ui:insert>                 
+                </div>
+
+                <div class="content">
+
+                    <p><strong><ui:insert name="books_count"/></strong></p>
+
+                   
+
+                    <div class="content_books">
+                        <ui:insert name="content">
+                            <ui:include src="/templates/content.xhtml"/>
+                        </ui:insert>    
+                    </div>
+                    
+
+                </div>
+
+
+
+                <div style="clear: both;">&nbsp;</div>
+
             </div>
 
-            <div class="content">
-                <ui:insert name="content">
-                    <ui:include src="/templates/content.xtml"/>
-                </ui:insert>
+            <div class="footer">
+                <ui:insert name="footer">
+                    <ui:include src="/templates/footer.xhtml"/>
+                </ui:insert>                 
+            </div>
+
+
         </div>
-
-        <div class="clear">
-
-        </div>
-
-    </div>
-
-    <div class="footer">
-        <ui:insert name="footer">
-            <ui:include src="/templates/footer.xhtml"/>
-        </ui:insert>
-    </div>
-</div>
-</h:body>
+    </h:body>
 </html>
 
