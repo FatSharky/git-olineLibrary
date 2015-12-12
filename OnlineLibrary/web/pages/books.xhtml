@@ -7,11 +7,13 @@
     <h:head>
         <title>Facelet Title</title>
     </h:head>
- <h:body>
+    <h:body>
+
         <ui:composition template="/templates/library_template.xhtml">
 
+
             <ui:define name="books_count">
-                #{msg.book_count} #{searchController.totalBooksCount}
+                <h:outputText value="#{msg.book_count} #{searchController.totalBooksCount}" id="booksCount"></h:outputText> 
             </ui:define>
 
 
@@ -21,24 +23,28 @@
 
             <ui:define name="content">
 
-                <h:dataTable value="#{searchController.currentBookList}" var="b" cellspacing="10px" columnClasses="col1, col2, col3"> 
+
+
+                <h:dataTable id="booksList" value="#{searchController.currentBookList}" var="b" cellspacing="10px" columnClasses="col1, col2, col3"> 
 
                     <h:column>
                         <h:outputLink value="#{request.contextPath}/PdfContent?id=#{b.id}" target="_blank">
-                              <a href="#"><h:graphicImage  value="/ShowImage?id=#{b.id}" width="120" height="160"/></a>
+                            <h:graphicImage  value="/ShowImage?id=#{b.id}" width="160" height="220"/>
                         </h:outputLink>
                     </h:column>
 
                     <h:column>
 
                         <div>
-                            <p><h:outputLink value="#{request.contextPath}/PdfContent?id=#{b.id}" target="_blank">#{b.name}</h:outputLink></p>
+                            <p>  <h:outputLink value="#{request.contextPath}/PdfContent?id=#{b.id}" target="_blank">#{b.name} </h:outputLink></p>
                             <p><strong>#{msg.author_name}: </strong>#{b.author}</p>                           
                             <p><strong>#{msg.page_count}:</strong> #{b.pageCount} #{msg.pages}</p>
                             <p><strong>#{msg.publisher}</strong> #{b.publisher}</p>
                             <p><strong>#{msg.publish_year}</strong> #{b.publishDate} г.</p>
 
                             <p><strong>#{msg.isbn}</strong> #{b.isbn}</p>
+                            <p><h:graphicImage library="images" name="book.gif" /><h:outputLink styleClass="content_link" value="#{request.contextPath}/PdfContent?id=#{b.id}"  target="_blank">#{msg.read} </h:outputLink>                                                             
+                            </p>
                         </div>
 
                     </h:column>
@@ -58,27 +64,23 @@
                 </h:dataTable>
 
 
-                <div class="pager">
-                    <h:form rendered="#{searchController.totalBooksCount>searchController.booksOnPage}">
-                        #{msg.pager}
-
-                        <ui:repeat value="#{searchController.pageNumbers}" var="pageNumber" >
-                            <h:commandLink value="#{pageNumber}" action="#{searchController.selectPage()}" styleClass="#{pageNumber == searchController.selectedPageNumber ? 'selected_page':''}">
-                                <f:param name="page_number" value="#{pageNumber}" />
-                            </h:commandLink>
-                        </ui:repeat>
-                        
-                    </h:form>
-
-
-                </div>
 
             </ui:define>
 
+            <ui:define name="paginator" >
+                <h:form rendered="#{searchController.totalBooksCount>searchController.booksOnPage}">
+                    #{msg.pager}
+
+                    <ui:repeat value="#{searchController.pageNumbers}" var="pageNumber" >
+                        <h:commandLink value="#{pageNumber}" styleClass="#{pageNumber == searchController.selectedPageNumber ? 'selected_page':''}">
+                            <f:param name="page_number" value="#{pageNumber}" />
+                            <f:ajax onevent="showProgress" event="click" render=":booksList :lettersForm :pages1 :pages2" listener="#{searchController.selectPage()}"/>
+                        </h:commandLink>
+                    </ui:repeat>
+                </h:form>
 
 
-
-
+            </ui:define>
 
         </ui:composition>
     </h:body>
