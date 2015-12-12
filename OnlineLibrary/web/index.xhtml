@@ -19,9 +19,10 @@
                 <h:form styleClass="login_form">
                     #{msg.index_input_name}<h:inputText id="username" value="#{user.userName}" required="true" requiredMessage="#{msg.login_required}">
                     <f:validator validatorId="by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.validators.LoginValidator"/>
+                    <f:ajax event="keyup" render="loginError"/>
                     </h:inputText>
-                    <h:commandButton action="#{loginController.login()}" value="#{msg.entry}"/>
-                    <p><h:message for="username" styleClass="error"/></p>
+                    <h:commandButton action="#{loginController.login()}" value="#{msg.entry}" styleClass="login_button" onchange="return checkValue(this.form, '#{msg.login_required}');"/>
+                    <p><h:message id="loginError" for="username" styleClass="error"/></p>
                 </h:form>
             </div>
         </div>
