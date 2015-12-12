@@ -37,10 +37,10 @@ public class SearchController implements Serializable {
     private char selectedLetter; // выбранная буква алфавита
     private long selectedPageNumber = 1; // выбранный номер страницы в постраничной навигации
     private long totalBooksCount; // общее кол-во книг (не на текущей странице, а всего), нажно для постраничности
-    private ArrayList<Integer> pageNumbers; 
+    private ArrayList<Integer> pageNumbers;
     private SearchType searchType;// хранит выбранный тип поиска
     private String searchString; // хранит поисковую строку
-    private final Map<String, SearchType> searchList; 
+    private final Map<String, SearchType> searchList;
     private ArrayList<Book> currentBookList; // текущий список книг для отображения
     private String currentSql;// последний выполнный sql без добавления limit
 
@@ -54,7 +54,8 @@ public class SearchController implements Serializable {
         searchList.put(bundle.getString("author_name"), SearchType.AUTHOR);
         searchList.put(bundle.getString("book_name"), SearchType.TITLE);
     }
-  private void fillBooksBySQL(String sql) {
+
+    private void fillBooksBySQL(String sql) {
 
         StringBuilder sqlBuilder = new StringBuilder(sql);
 
@@ -78,8 +79,6 @@ public class SearchController implements Serializable {
                 fillPageNumbers(totalBooksCount, booksOnPage);
 
             }
-
-
 
             if (totalBooksCount > booksOnPage) {
                 sqlBuilder.append(" limit ").append(selectedPageNumber * booksOnPage - booksOnPage).append(",").append(booksOnPage);
@@ -140,7 +139,7 @@ public class SearchController implements Serializable {
     }
 
     public String fillBooksByGenre() {
-
+    
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 
         submitValues(' ', 1, Integer.valueOf(params.get("genre_id")), false);
@@ -151,8 +150,6 @@ public class SearchController implements Serializable {
                 + "inner join publisher p on b.publisher_id=p.id "
                 + "where genre_id=" + selectedGenreId + " order by b.name ");
 
-
-
         return "books";
     }
 
@@ -162,7 +159,6 @@ public class SearchController implements Serializable {
         selectedLetter = params.get("letter").charAt(0);
 
         submitValues(selectedLetter, 1, -1, false);
-
 
         fillBooksBySQL("select b.id,b.name,b.isbn,b.page_count,b.publish_year, p.name as publisher, a.fio as author, g.name as genre, b.descr, b.image from book b "
                 + "inner join author a on b.author_id=a.id "
@@ -194,10 +190,7 @@ public class SearchController implements Serializable {
             sql.append("where lower(b.name) like '%").append(searchString.toLowerCase()).append("%' order by b.name ");
         }
 
-
-
         fillBooksBySQL(sql.toString());
-
 
         return "books";
     }
@@ -213,7 +206,6 @@ public class SearchController implements Serializable {
         Statement stmt = null;
         ResultSet rs = null;
         Connection conn = null;
-
 
         byte[] content = null;
         try {
