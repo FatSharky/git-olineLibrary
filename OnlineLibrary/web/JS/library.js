@@ -5,17 +5,17 @@
  */
 
 function checkValue (form, message){
-    var userIput = form[form.id + ":username"];
+    var userInput = form[form.id + ":username"];
     
     if (userInput.vlaue === ''){
         alert(message);
-        usuerIput.focus();
+        userInput.focus();
         return false;
     }
     return true;
 }
 
-function showProgess(data){
+function showProgress(data){
     if(data.status === "begin"){
         document.getElemetById('loading_wrapper').style.display="block";   
     }
