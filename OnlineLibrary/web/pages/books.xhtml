@@ -6,16 +6,17 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Facelet Title</title>
+
     </h:head>
-   <h:body>
+    <h:body>
 
         <ui:composition template="/templates/library_template.xhtml">
 
 
             <ui:define name="books_count">
                 <h:outputText value="#{msg.book_count} #{bookListController.totalBooksCount}" id="booksCount"></h:outputText> 
-            </ui:define>
 
+            </ui:define>
 
             <ui:define name="title">
                 #{msg.book_list}
@@ -25,7 +26,7 @@
 
                 <h:form id="booksForm">
 
-                    <h:panelGroup id ="admin_tools">  
+                    <h:panelGroup id ="admin_tools" rendered="#{request.isUserInRole('admin')}">   
 
                         <h:commandLink rendered="#{!bookListController.editMode}">
                             <h:graphicImage library="images" name="add.jpg" />
@@ -43,7 +44,7 @@
                             <f:ajax onevent="showProgress" execute="@form" render="@form" />
                         </h:commandButton>  
 
-                        <h:commandButton immediate="true" action="#{bookListController.cancelEdit()}" rendered="#{bookListController.editMode}" value="#{msg.cancel}">
+                        <h:commandButton immediate="true" action="#{bookListController.cancelEditMode()}" rendered="#{bookListController.editMode}" value="#{msg.cancel}">
                             <f:ajax onevent="showProgress" execute="@form" render="@form" />
                         </h:commandButton>  
 
@@ -192,7 +193,6 @@
         </ui:composition>
 
     </h:body>
-
 
 </html>
 

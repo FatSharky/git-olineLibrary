@@ -15,25 +15,22 @@ import javax.faces.context.FacesContext;
  *
  * @author Vladislav
  */
-@ManagedBean
+@ManagedBean(eager=true)
 @SessionScoped
 public class LocaleChanger implements Serializable {
 
-    private Locale currentLocale;
+    private Locale currentLocale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
 
     public LocaleChanger() {
-        this.currentLocale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
     }
 
     public void changeLocale(String localeCode) {
-        currentLocale= new Locale(localeCode);
+        currentLocale = new Locale(localeCode);
     }
 
-    /**
-     * @return the currentLocale
-     */
     public Locale getCurrentLocale() {
         return currentLocale;
     }
+
 
 }
