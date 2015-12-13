@@ -7,10 +7,6 @@
     <h:head>
         <title>Facelet Title</title>
     </h:head>
-    <h:head>
-        <title>Facelet Title</title>
-
-    </h:head>
    <h:body>
 
         <ui:composition template="/templates/library_template.xhtml">
@@ -56,9 +52,13 @@
 
                     <h:dataTable id="booksList" value="#{bookListController.currentBookList}" var="b" cellspacing="10px" columnClasses="col1, col2, col3"> 
                         <h:column>
-                            <h:outputLink value="#{request.contextPath}/PdfContent?id=#{b.id}" target="_blank">
+
+                            <h:outputLink styleClass="content_link" value="#{request.contextPath}/PdfContent"  target="_blank">                                                             
                                 <h:graphicImage  value="/ShowImage?id=#{b.id}" width="160" height="220"/>
-                            </h:outputLink>
+                                <f:param name="id" value="#{b.id}"/>
+                            </h:outputLink> 
+
+
                         </h:column>
 
                         <h:column>
@@ -108,13 +108,15 @@
 
                                 <p>
                                     <h:panelGroup rendered="#{!bookListController.editMode}">
-                                        <h:outputLink styleClass="content_link" value="#{request.contextPath}/PdfContent"  target="_blank">                                                             
+                                        <h:outputLink styleClass="content_link" value="#{request.contextPath}/PdfContent"  target="_blank">   
+                                            <h:graphicImage library="images" name="book.gif" />
                                             <h:outputText value="#{msg.read}"></h:outputText>
                                             <f:param name="id" value="#{b.id}"/>
                                         </h:outputLink> 
-                                        <h:graphicImage library="images" name="download.png" />
+
 
                                         <h:outputLink styleClass="save_link" value="#{request.contextPath}/PdfContent" target="_blank"> 
+                                            <h:graphicImage library="images" name="download.png" />
                                             <h:outputText value="#{msg.download}"></h:outputText>
                                             <f:param name="id" value="#{b.id}"/>
                                             <f:param name="filename" value="#{b.name}"/>
@@ -155,23 +157,42 @@
             </ui:define>
 
             <ui:define name="paginator" >
-                <h:form rendered="#{bookListController.totalBooksCount>bookListController.booksOnPage}">
-                    #{msg.pager}
+                <h:form>
 
+                    <h:selectOneMenu styleClass="books_on_page_dropdown" value="#{bookListController.booksOnPage}" valueChangeListener="#{bookListController.changeBooksCountOnPage}">
+                        <f:selectItem itemValue="5" />
+                        <f:selectItem itemValue="10" />
+                        <f:selectItem itemValue="30" />
+                        <f:selectItem itemValue="50" />
+                        <f:ajax event="change" execute="@form" onevent="showProgress" render=":booksForm :booksForm:booksList :pages1 :pages2"  />
+                    </h:selectOneMenu>
+
+                    #{msg.pager}
                     <ui:repeat value="#{bookListController.pageNumbers}" var="pageNumber" >
-                        <h:commandLink value="#{pageNumber}" styleClass="#{pageNumber == bookListController.selectedPageNumber ? 'selected_page':''}">
+
+                        <h:outputText value="#{pageNumber}" rendered="#{pageNumber == bookListController.selectedPageNumber}" styleClass="selected_page"/>
+
+
+                        <h:commandLink value="#{pageNumber}" rendered="#{pageNumber != bookListController.selectedPageNumber}" styleClass="page_number">
                             <f:param name="page_number" value="#{pageNumber}" />
-                            <f:ajax onevent="showProgress" event="click" render=":booksForm:booksList :lettersForm :pages1 :pages2" listener="#{bookListController.selectPage()}"/>
+                            <f:ajax onevent="showProgress" event="click" render=":booksForm :booksForm:booksList :lettersForm :pages1 :pages2" listener="#{bookListController.selectPage()}"/>
                         </h:commandLink>
                     </ui:repeat>
+
+
+
+
                 </h:form>
 
 
             </ui:define>
 
+
+
         </ui:composition>
 
     </h:body>
+
 
 </html>
 
