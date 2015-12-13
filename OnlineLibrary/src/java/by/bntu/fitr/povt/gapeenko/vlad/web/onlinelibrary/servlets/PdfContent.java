@@ -8,6 +8,7 @@ package by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.servlets;
 import by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.controllers.BookListController;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URLEncoder;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -35,11 +36,17 @@ public class PdfContent extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("application/pdf");
-        try (OutputStream out = response.getOutputStream()) {
+        OutputStream out = response.getOutputStream();
+        try {
             int id = Integer.valueOf(request.getParameter("id"));
+            Boolean save =Boolean.valueOf(request.getParameter("save"));
+            String filename = request.getParameter("filename");
             BookListController searchController = (BookListController) request.getSession(false).getAttribute("bookListController");
             byte[] content = searchController.getContent(id);
             response.setContentLength(content.length);
+            if (save){
+                response.setHeader("Content-Discription", "attachment;filename="+ URLEncoder.encode(filename,"UTF-8")+".pdf");
+            }
             out.write(content);
         } catch (NumberFormatException | IOException ex) {
             ex.printStackTrace();
