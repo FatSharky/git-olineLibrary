@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Dec 14, 2015 12:12:28 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.entity.Groups" table="groups" catalog="library" optimistic-lock="version">
+        <id name="groupid" type="string">
+            <column name="GROUPID" length="20" />
+            <generator class="assigned" />
+        </id>
+    </class>
+</hibernate-mapping>
