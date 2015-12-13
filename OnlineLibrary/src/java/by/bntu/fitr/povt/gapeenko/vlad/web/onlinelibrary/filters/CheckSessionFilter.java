@@ -207,6 +207,7 @@ public class CheckSessionFilter implements Filter {
      * Init method for this filter
      * @param filterConfig
      */
+    @Override
     public void init(FilterConfig filterConfig) {
         this.filterConfig = filterConfig;
         if (filterConfig != null) {

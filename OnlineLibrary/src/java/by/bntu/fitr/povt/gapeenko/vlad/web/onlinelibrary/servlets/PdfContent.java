@@ -5,7 +5,7 @@
  */
 package by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.servlets;
 
-import by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.controllers.SearchController;
+import by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.controllers.BookListController;
 import java.io.IOException;
 import java.io.OutputStream;
 import javax.servlet.ServletException;
@@ -37,7 +37,7 @@ public class PdfContent extends HttpServlet {
         response.setContentType("application/pdf");
         try (OutputStream out = response.getOutputStream()) {
             int id = Integer.valueOf(request.getParameter("id"));
-            SearchController searchController = (SearchController) request.getSession(false).getAttribute("searchController");
+            BookListController searchController = (BookListController) request.getSession(false).getAttribute("bookListController");
             byte[] content = searchController.getContent(id);
             response.setContentLength(content.length);
             out.write(content);

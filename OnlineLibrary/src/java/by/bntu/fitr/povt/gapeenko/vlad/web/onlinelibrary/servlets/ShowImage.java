@@ -5,7 +5,7 @@
  */
 package by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.servlets;
 
-import by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.controllers.SearchController;
+import by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.controllers.BookListController;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -35,7 +35,7 @@ public class ShowImage extends HttpServlet {
         response.setContentType("image/jpeg");  
         try (OutputStream out = response.getOutputStream()) {
             int id = Integer.valueOf(request.getParameter("id"));
-            SearchController searchController = (SearchController)request.getSession(false).getAttribute("searchController");
+            BookListController searchController = (BookListController)request.getSession(false).getAttribute("bookListController");
             byte[] image = searchController.getImage(id);         
             response.setContentLength(image.length);
             out.write(image);
