@@ -10,6 +10,7 @@ import by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.db.Database;
 import by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.enums.SearchType;
 import java.io.Serializable;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -36,13 +37,14 @@ public class BookListController implements Serializable {
     private char selectedLetter; // выбранная буква алфавита
     private long selectedPageNumber = 1; // выбранный номер страницы в постраничной навигации
     private long totalBooksCount; // общее кол-во книг (не на текущей странице, а всего), нажно для постраничности
-    private ArrayList<Integer> pageNumbers = new ArrayList<>(); // общее кол-во книг (не на текущей странице, а всего), нажно для постраничности
+    private ArrayList<Integer> pageNumbers; 
     private SearchType searchType;// хранит выбранный тип поиска
     private String searchString; // хранит поисковую строку
     private ArrayList<Book> currentBookList; // текущий список книг для отображения
     private String currentSql;// последний выполнный sql без добавления limit
 
     public BookListController() {
+        this.pageNumbers = new ArrayList<>();
         fillBooksAll();
 
 
@@ -290,6 +292,78 @@ public class BookListController implements Serializable {
         return image;
     }
 
+    public String updateBooks() {
+        imitateLoading();
+
+        PreparedStatement prepStmt = null;
+        ResultSet rs = null;
+        Connection conn = null;
+
+        try {
+            conn = Database.getConnection();
+            prepStmt = conn.prepareStatement("update book set name=?, isbn=?, page_count=?, publish_year=?, descr=? where id=?");
+
+
+            for (Book book : currentBookList) {
+                if (!book.isEdit()) continue;
+                prepStmt.setString(1, book.getName());
+                prepStmt.setString(2, book.getIsbn());
+//                prepStmt.setString(3, book.getAuthor());
+                prepStmt.setInt(3, book.getPageCount());
+                prepStmt.setInt(4, book.getPublishDate());
+//                prepStmt.setString(6, book.getPublisher());
+                prepStmt.setString(5, book.getDescr());
+                prepStmt.setLong(6, book.getId());
+                prepStmt.addBatch();
+            }
+
+
+            prepStmt.executeBatch();
+
+
+        } catch (SQLException ex) {
+            Logger.getLogger(BookListController.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (prepStmt != null) {
+                    prepStmt.close();
+                }
+                if (rs != null) {
+                    rs.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(BookListController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        cancelEdit();
+        
+        return "books";
+    }
+    private boolean editMode;
+
+    public boolean isEditMode() {
+        return editMode;
+    }
+
+    public void showEdit() {
+        
+        editMode = true;
+        
+        
+        
+    }
+    
+    public void cancelEdit(){
+        editMode = false;
+        for (Book book : currentBookList) {
+            book.setEdit(false);
+        }
+    }
+
     public Character[] getRussianLetters() {
         Character[] letters = new Character[33];
         letters[0] = 'А';
@@ -332,7 +406,7 @@ public class BookListController implements Serializable {
     public void searchStringChanged(ValueChangeEvent e) {
         searchString = e.getNewValue().toString();
     }
-    
+
     public void searchTypeChanged(ValueChangeEvent e) {
         searchType = (SearchType) e.getNewValue();
     }

@@ -11,7 +11,9 @@ import java.io.Serializable;
  *
  * @author Vladislav
  */
-public class Book implements Serializable{
+public class Book implements Serializable {
+
+    private boolean edit;
     private long id;
     private String name;
     private byte[] content;
@@ -177,5 +179,13 @@ public class Book implements Serializable{
     public void setDescr(String descr) {
         this.descr = descr;
     }
-    
+
+    public boolean isEdit() {
+        return edit;
+    }
+
+    public void setEdit(boolean edit) {
+        this.edit = edit;
+    }
+
 }
