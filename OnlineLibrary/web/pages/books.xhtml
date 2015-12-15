@@ -4,9 +4,9 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+      xmlns:p="http://primefaces.org/ui">
 
-    <h:head>
+ <h:head>
         <title>Facelet Title</title>
 
     </h:head>
@@ -16,7 +16,7 @@
 
 
             <ui:define name="books_count">
-                <h:outputText value="#{msg.book_count} #{bookListController.currentBookList.size()}" id="booksCount"></h:outputText> 
+                <h:outputText value="#{msg.book_count} #{bookListController.pager.totalBooksCount}" id="booksCount"></h:outputText> 
 
             </ui:define>
 
@@ -26,47 +26,50 @@
 
             <ui:define name="content">
 
+
                 <h:form id="booksForm">
 
+
                     <h:panelGroup id ="admin_tools" rendered="#{request.isUserInRole('admin')}">   
+                        <f:ajax onevent="showProgress" execute="@form" render="@form :booksCount" onerror="showError">
 
-                        <h:commandLink rendered="#{!bookListController.editMode}">
-                            <h:graphicImage library="images" name="add.jpg" />
-                            <h:outputText value="#{msg.add_book}"></h:outputText>
-                            <f:ajax onevent="showProgress" execute="@form" render="@form" />
-                        </h:commandLink>  
+                            <h:commandLink rendered="#{!bookListController.editMode}">
+                                <h:graphicImage library="images" name="add.jpg" />
+                                <h:outputText value="#{msg.add_book}"></h:outputText>
+                            </h:commandLink>  
 
+                            <h:commandLink action="#{bookListController.showEdit}" rendered="#{!bookListController.editMode and bookListController.pager.totalBooksCount>0}">
+                                <h:graphicImage library="images" name="edit.jpg" />
+                                <h:outputText value="#{msg.edit}"></h:outputText>
+                            </h:commandLink> 
 
-                        <h:commandLink action="#{bookListController.showEdit}" rendered="#{!bookListController.editMode}">
-                            <h:graphicImage library="images" name="edit.jpg" />
-                            <h:outputText value="#{msg.edit}"></h:outputText>
-                            <f:ajax onevent="showProgress" execute="@form" render="@form" />
-                        </h:commandLink>  
+                            <h:commandButton action="#{bookListController.updateBooks}" rendered="#{bookListController.editMode}" value="#{msg.save}"/>
 
-                        <h:commandButton action="#{bookListController.updateBooks()}" rendered="#{bookListController.editMode}" value="#{msg.save}">
-                            <f:ajax onevent="showProgress" execute="@form" render="@form" />
-                        </h:commandButton>  
+                            <h:commandButton immediate="true" action="#{bookListController.cancelEditMode()}" rendered="#{bookListController.editMode}" value="#{msg.cancel}"/>
 
-                        <h:commandButton immediate="true" action="#{bookListController.cancelEditMode()}" rendered="#{bookListController.editMode}" value="#{msg.cancel}">
-                            <f:ajax onevent="showProgress" execute="@form" render="@form" />
-                        </h:commandButton>  
+                        </f:ajax>
 
                     </h:panelGroup>
 
 
-                    <h:dataTable id="booksList" value="#{bookListController.currentBookList}" var="b" cellspacing="10px" columnClasses="col1, col2, col3"> 
-                        <h:column>
 
+
+                    <p:dataTable  lazy="true" var="b" value="#{bookListController.bookListModel}"  id="booksList" styleClass="books_list"  paginator="true" rows="5"
+                                  rowsPerPageTemplate="5,10,15" paginatorTemplate="{RowsPerPageDropdown} {PageLinks}"  paginatorAlwaysVisible="false" emptyMessage="" >  
+                        <p:column styleClass="col1">
+
+                            
                             <h:outputLink styleClass="content_link" value="#{request.contextPath}/PdfContent"  target="_blank">                                                             
-                                <h:graphicImage  value="/ShowImage?id=#{b.id}" width="160" height="220"/>
+                                <h:graphicImage  value="/ShowImage?index=#{bookListController.pager.rowIndex}" width="160" height="220"/>
                                 <f:param name="id" value="#{b.id}"/>
                             </h:outputLink> 
 
 
 
-                        </h:column>
 
-                        <h:column>
+                        </p:column>
+
+                        <p:column styleClass="col2">
 
                             <div>
 
@@ -89,6 +92,7 @@
                                     </h:selectOneMenu>
                                 </p>
 
+
                                 <p>
                                     <h:panelGroup rendered="#{b.edit}">
                                         <strong>#{msg.genre}: </strong>                                    
@@ -99,10 +103,20 @@
                                 </p>
 
                                 <p>
+                                    <h:panelGroup rendered="#{b.edit}">
+                                        <strong>#{msg.publisher} </strong>                                    
+                                        <h:selectOneMenu  value="#{b.publisher}" converter="#{publisherController}">
+                                            <f:selectItems value="${publisherController.selectItems}"/>
+                                        </h:selectOneMenu>
+                                    </h:panelGroup>
+                                </p>
+
+
+                                <p>
                                     <strong>#{msg.page_count}</strong> 
                                     <h:outputText value="#{b.pageCount} #{msg.pages}" rendered="#{!b.edit}"/>
 
-                                    <h:inputText value="#{b.pageCount}" styleClass="pages_edit" rendered="#{b.edit}"/>
+                                    <h:inputText value="#{b.pageCount}" styleClass="small_edit" rendered="#{b.edit}"/>  
                                 </p>
 
                                 <p>
@@ -115,13 +129,13 @@
                                 <p>
                                     <strong>#{msg.publish_year}</strong> 
                                     <h:outputText value="#{b.publishYear} г." rendered="#{!b.edit}"/>
-                                    <h:inputText value="#{b.publishYear}" styleClass="publisher_edit" rendered="#{b.edit}"/>
+                                    <h:inputText value="#{b.publishYear}" styleClass="small_edit" rendered="#{b.edit}"/>
                                 </p>
 
                                 <p>
                                     <strong>#{msg.isbn}</strong> 
                                     <h:outputText value="#{b.isbn}" rendered="#{!b.edit}"/>
-                                    <h:inputText value="#{b.isbn}" styleClass="name_edit" rendered="#{b.edit}"/>
+                                    <h:inputText value="#{b.isbn}" styleClass="small_edit" rendered="#{b.edit}"/>
                                 </p>
 
                                 <p>
@@ -145,12 +159,12 @@
                                 </p>
                             </div>
 
-                        </h:column>
+                        </p:column>
 
 
 
 
-                        <h:column>
+                        <p:column styleClass="col3" >
                             <div class="book_details">
                                 <p><strong>#{msg.descr}</strong></p>
                                 <p ><h:outputText value="#{b.descr}" rendered="#{!b.edit}"/>
@@ -158,55 +172,27 @@
 
                                 </p>
                             </div>
-                        </h:column>
+                        </p:column>
 
 
-                        <h:column>       
+                        <p:column>       
 
                             <h:selectBooleanCheckbox value="#{b.edit}" rendered="#{!bookListController.editMode}"/>                              
-                        </h:column>
+                        </p:column>
+                    </p:dataTable> 
 
 
-
-                    </h:dataTable>
                 </h:form>
 
 
             </ui:define>
 
-            <ui:define name="paginator">
-                <h:form rendered="false">
 
-                    <h:selectOneMenu styleClass="books_on_page_dropdown" value="#{bookListController.booksOnPage}" valueChangeListener="#{bookListController.changeBooksCountOnPage}">
-                        <f:selectItem itemValue="5" />
-                        <f:selectItem itemValue="10" />
-                        <f:selectItem itemValue="30" />
-                        <f:selectItem itemValue="50" />
-                        <f:ajax event="change" execute="@form" onevent="showProgress" render=":booksForm :booksForm:booksList :pages1 :pages2"  />
-                    </h:selectOneMenu>
-
-                    #{msg.pager}
-                    <ui:repeat value="#{bookListController.pageNumbers}" var="pageNumber" >
-
-                        <h:outputText value="#{pageNumber}" rendered="#{pageNumber == bookListController.selectedPageNumber}" styleClass="selected_page"/>
-
-
-                        <h:commandLink value="#{pageNumber}" rendered="#{pageNumber != bookListController.selectedPageNumber}" styleClass="page_number">
-                            <f:param name="page_number" value="#{pageNumber}" />
-                            <f:ajax onevent="showProgress" event="click" render=":booksForm :booksForm:booksList :lettersForm :pages1 :pages2" listener="#{bookListController.selectPage()}"/>
-                        </h:commandLink>
-                    </ui:repeat>
-
-                </h:form>
-
-
-            </ui:define>
 
 
 
         </ui:composition>
 
     </h:body>
-
 </html>
 
