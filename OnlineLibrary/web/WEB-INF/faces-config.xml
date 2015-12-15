@@ -6,6 +6,9 @@
 
     <application>
         <resource-bundle>
+            <locale-config>
+                <default-locale>ru_ru</default-locale>
+            </locale-config>
             <base-name>
                 by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.nls.messages
             </base-name>
