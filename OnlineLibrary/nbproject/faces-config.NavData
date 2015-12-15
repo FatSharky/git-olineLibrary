@@ -5,6 +5,7 @@
         <Node id="index.xhtml" x="181" y="361" zoom="false"/>
         <Node id="templates/content.xhtml" x="400" y="150" zoom="true"/>
         <Node id="templates/left_menu.xhtml" x="900" y="150" zoom="true"/>
+        <Node id="templates/locales.xhtml" x="650" y="300" zoom="true"/>
         <Node id="pages/books.xhtml" x="169" y="160" zoom="false"/>
         <Node id="templates/library_template.xhtml" x="650" y="150" zoom="true"/>
         <Node id="templates/header.xhtml" x="400" y="300" zoom="true"/>
