@@ -140,7 +140,7 @@ public class BookListController implements Serializable {
     }
 
    
-    //<editor-fold defaultstate="collapsed" desc="гетеры сетеры">
+        //<editor-fold defaultstate="collapsed" desc="гетеры сетеры">
     public boolean isEditMode() {
         return editModeView;
     }
