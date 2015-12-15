@@ -13,7 +13,7 @@ and open the template in the editor.
         <title>Facelet Title</title>
         <h:outputStylesheet library="css" name="style_main.css"  />
     </h:head>
-    <h:body>
+<h:body>
         <ui:composition>
 
             <div class="locales">
@@ -21,13 +21,11 @@ and open the template in the editor.
 
                     <h:commandLink action="#{localeChanger.changeLocale('en')}">
                         <h:graphicImage library="images" name="eng.png" title="#{msg.english}" />
-                        <f:ajax render=":login_div :lib_title" execute="@form" disabled="#{fn:contains(request.requestURL, 'books.xhtml')}"/>
-                        <f:ajax render="@all" execute="@form" disabled="#{not fn:contains(request.requestURL, 'books.xhtml')}"/>
+
                     </h:commandLink>
                     <h:commandLink action = "#{localeChanger.changeLocale('ru')}">
                         <h:graphicImage library="images" name="rus.png" title="#{msg.russian}"/>
-                        <f:ajax render=":login_div :lib_title" execute="@form" disabled="#{fn:contains(request.requestURL, 'books.xhtml')}"/>
-                        <f:ajax render="@all" execute="@form" disabled="#{not fn:contains(request.requestURL, 'books.xhtml')}"/>
+
                     </h:commandLink>
 
                 </h:form>
