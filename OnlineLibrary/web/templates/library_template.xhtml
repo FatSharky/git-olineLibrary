@@ -6,7 +6,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
 
-   <f:view locale="#{localeChanger.currentLocale}">  
+  <f:view locale="#{localeChanger.currentLocale}">  
         <h:head>
             <title><ui:insert name="title"/></title>
             <h:outputStylesheet library="css" name="style_main.css"  />
@@ -14,9 +14,12 @@
         </h:head>
         <h:body>
 
-            <div id="loading_wrapper">
+
+   <div id="loading_wrapper">
                 <p>#{msg.loading}...</p>
             </div>
+
+
 
             <div class="container">
 
@@ -37,10 +40,7 @@
 
                         <p><strong><ui:insert name="books_count"/></strong></p>
 
-                        <div class="pager">
-                            <h:panelGroup id="pages1" layout="block"> <ui:insert name="paginator"/> </h:panelGroup>
 
-                        </div>
 
                         <div class="content_books">
                             <ui:insert name="content">
@@ -48,11 +48,7 @@
                             </ui:insert>    
                         </div>
 
-                        <div class="pager">
 
-                            <h:panelGroup id="pages2" layout="block"> <ui:insert name="paginator"/> </h:panelGroup>
-
-                        </div>
 
                     </div>
 
@@ -68,8 +64,10 @@
                     </ui:insert>                 
                 </div>
 
+                
 
             </div>
+
         </h:body>
     </f:view>
 </html>
