@@ -6,10 +6,12 @@
 package by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.controllers;
 
 
+import by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.comparators.ListComparator;
 import by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.db.DataHelper;
 import by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.entity.Genre;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,19 +31,22 @@ import javax.faces.model.SelectItem;
 @ApplicationScoped
 public class GenreController implements Serializable, Converter {
 
-    private List<SelectItem> selectItems = new ArrayList<SelectItem>();
-    private Map<Long, Genre> genreMap;
-    private List<Genre> genreList;
+    private final List<SelectItem> selectItems = new ArrayList<>();
+    private final Map<Long, Genre> map;
+    private final List<Genre> list;
 
     public GenreController() {
 
-        genreMap = new HashMap<Long, Genre>();
-        genreList = DataHelper.getInstance().getAllGenres();
+        map = new HashMap<>();
+        list = DataHelper.getInstance().getAllGenres();
+        Collections.sort(list, ListComparator.getInstance());
 
-        for (Genre genre : genreList) {
-            genreMap.put(genre.getId(), genre);
+        list.stream().map((genre) -> {
+            map.put(genre.getId(), genre);
+            return genre;
+        }).forEach((genre) -> {
             selectItems.add(new SelectItem(genre, genre.getName()));
-        }
+        });
 
     }
 
@@ -49,18 +54,19 @@ public class GenreController implements Serializable, Converter {
         return selectItems;
     }
 
-    // 
     public List<Genre> getGenreList() {
-        return genreList;
+        return list;
     }
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
-        return genreMap.get(Long.valueOf(value));
+        return map.get(Long.valueOf(value));
     }
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
-        return ((Genre) value).getId().toString();
+        return ((Genre)value).getId().toString();
     }
+    
+    
 }
