@@ -8,13 +8,13 @@
             <column name="id" />
             <generator class="identity" />
         </id>
-        <many-to-one name="author" class="by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.entity.Author" fetch="select">
+        <many-to-one name="author" class="by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.entity.Author" fetch="join">
             <column name="author_id" not-null="true" />
         </many-to-one>
-        <many-to-one name="genre" class="by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.entity.Genre" fetch="select">
+        <many-to-one name="genre" class="by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.entity.Genre" fetch="join">
             <column name="genre_id" not-null="true" />
         </many-to-one>
-        <many-to-one name="publisher" class="by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.entity.Publisher" fetch="select">
+        <many-to-one name="publisher" class="by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.entity.Publisher" fetch="join">
             <column name="publisher_id" not-null="true" />
         </many-to-one>
         <property name="name" type="string">
