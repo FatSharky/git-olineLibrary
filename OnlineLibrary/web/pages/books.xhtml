@@ -10,7 +10,7 @@
         <title>Facelet Title</title>
 
     </h:head>
-    <h:body>
+ <h:body>
 
         <ui:composition template="/templates/library_template.xhtml">
 
@@ -29,7 +29,7 @@
 
                 <h:form id="booksForm">
 
-
+                 
                     <h:panelGroup id ="admin_tools" rendered="#{request.isUserInRole('admin')}">   
                         <f:ajax onevent="showProgress" execute="@form" render="@form :booksCount" onerror="showError">
 
@@ -149,7 +149,7 @@
 
                                         <h:outputLink styleClass="save_link" value="#{request.contextPath}/PdfContent" target="_blank"> 
                                             <h:graphicImage library="images" name="download.png" />
-                                            <h:outputText value="#{msg.download}"></h:outputText>
+                                            <h:outputText value="#{msg.download}"></h:outputText>                                            
                                             <f:param name="id" value="#{b.id}"/>
                                             <f:param name="filename" value="#{b.name}"/>
                                             <f:param name="save" value="true"/>
