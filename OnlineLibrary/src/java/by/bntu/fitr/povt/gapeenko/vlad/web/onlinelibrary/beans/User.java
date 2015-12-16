@@ -4,8 +4,6 @@
  * and open the template in the editor.
  */
 package by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.beans;
-
-import by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.controllers.BookListController;
 import java.io.Serializable;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -21,7 +19,6 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author Vladislav
  */
-
 @ManagedBean
 @SessionScoped
 public class User implements Serializable {
@@ -47,21 +44,26 @@ public class User implements Serializable {
     public String getPassword() {
         return password;
     }
-    
-    
+
     public String login() {
+        
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        
         try {
 
             try {
-                Thread.sleep(1000);// имитация загрузки процесса
-            } catch (InterruptedException ex) {
-                Logger.getLogger(BookListController.class.getName()).log(Level.SEVERE, null, ex);
+                Thread.sleep(2000);
+            } catch (Exception e) {
             }
 
-//            ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).logout();
-//            FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+            
 
-            ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).login(username, password);
+            if (request.getUserPrincipal()==null || (request.getUserPrincipal()!=null && !request.getUserPrincipal().getName().equals(username))) {
+                request.logout();
+                request.login(username, password);
+            }
+
+
 
             return "books";
         } catch (ServletException ex) {
@@ -70,8 +72,7 @@ public class User implements Serializable {
             FacesContext context = FacesContext.getCurrentInstance();
             FacesMessage message = new FacesMessage(bundle.getString("login_error"));
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
-            context.addMessage("login_form", message);
-
+            context.addMessage("login_form", message);            
         }
 
         return "index";
@@ -94,5 +95,4 @@ public class User implements Serializable {
 
         return result;
     }
-      
 }
