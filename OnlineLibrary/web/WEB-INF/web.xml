@@ -4,6 +4,10 @@
         <param-name>javax.faces.PROJECT_STAGE</param-name>
         <param-value>Development</param-value>
     </context-param>
+    <context-param>
+        <param-name>primefaces.THEME</param-name>
+        <param-value>library</param-value>
+    </context-param>
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
@@ -25,6 +29,9 @@
         <session-timeout>
             30
         </session-timeout>
+        <cookie-config>
+            <name>SESSIONID</name>
+        </cookie-config>
     </session-config>
     <welcome-file-list>
         <welcome-file>faces/index.xhtml</welcome-file>
@@ -63,9 +70,4 @@
         <res-auth>Container</res-auth>
         <res-sharing-scope>Shareable</res-sharing-scope>
     </resource-ref>
-    
-    <context-param>
-        <param-name>primefacec.THEME</param-name>
-        <param-value>library</param-value>
-    </context-param>
 </web-app>
