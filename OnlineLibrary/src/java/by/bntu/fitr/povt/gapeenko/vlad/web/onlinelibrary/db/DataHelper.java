@@ -8,9 +8,9 @@ import by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.entity.HibernateUtil;
 import by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.entity.Publisher;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
@@ -23,12 +23,12 @@ import org.hibernate.transform.Transformers;
 
 public class DataHelper {
 
-    private Pager pager = Pager.getInstance();
+    private final Pager pager = Pager.getInstance();
     private SessionFactory sessionFactory = null;
     private static DataHelper dataHelper;
     private DetachedCriteria bookListCriteria;
     private DetachedCriteria booksCountCriteria;
-    private ProjectionList bookProjection;
+    private final ProjectionList bookProjection;
 
     private DataHelper() {
 
@@ -130,28 +130,42 @@ public class DataHelper {
         pager.setList(list);
     }
 
-     private void runCountCriteria() {
-     Criteria criteria = booksCountCriteria.getExecutableCriteria(getSession());
-     Integer total = ((Number) criteria.setProjection(Projections.rowCount()).uniqueResult()).intValue();
-     pager.setTotalBooksCount(total);
-     }
+    private void runCountCriteria() {
+        Criteria criteria = booksCountCriteria.getExecutableCriteria(getSession());
+        Integer total = (Integer) criteria.setProjection(Projections.rowCount()).uniqueResult();
+        pager.setTotalBooksCount(total);
+    }
 
+    public void updateBook(Book book) {
+        Query query = getSession().createQuery("update Book set name = :name, "
+                + " pageCount = :pageCount, "
+                + " isbn = :isbn, "
+                + " genre = :genre, "
+                + " author = :author, "
+                + " publishYear = :publishYear, "
+                + " publisher = :publisher, "
+                + " descr = :descr "
+                + " where id = :id");
+        
+        query.setParameter("name", book.getName());
+        query.setParameter("pageCount", book.getPageCount());
+        query.setParameter("isbn", book.getIsbn());
+        query.setParameter("genre", book.getGenre());
+        query.setParameter("author", book.getAuthor());
+        query.setParameter("publishYear", book.getPublishYear());
+        query.setParameter("publisher", book.getPublisher());
+        query.setParameter("descr", book.getDescr());
+        query.setParameter("id", book.getId());
 
-    public void update() {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.getTransaction();
-        transaction.begin();
-        for (Object object : pager.getList()) {
-            Book book = (Book) object;
-            if (book.isEdit()) {
-                session.update(book);
-            }
+        int result = query.executeUpdate();
+        
 
-        }
-        transaction.commit();
-        session.flush();
-        session.close();
+    }
 
+    public void deleteBook(Book book) {
+        Query query = getSession().createQuery("delete from Book where id = :id");
+        query.setParameter("id", book.getId());
+        int result = query.executeUpdate();
     }
 
     private void prepareCriterias(Criterion criterion) {
