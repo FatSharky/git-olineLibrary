@@ -18,6 +18,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
+import org.primefaces.component.datagrid.DataGrid;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.LazyDataModel;
@@ -30,7 +31,7 @@ import org.primefaces.model.LazyDataModel;
 @SessionScoped
 public class BookListController implements Serializable {
 
-    private DataTable dataTable;
+    private DataGrid dataTable;
     private Book selectedBook;
     private DataHelper dataHelper = dataHelper = DataHelper.getInstance();
     private LazyDataModel<Book> bookListModel;
@@ -51,7 +52,7 @@ public class BookListController implements Serializable {
     private void submitValues(Character selectedLetter, long selectedGenreId) {
         this.selectedLetter = selectedLetter;
         this.selectedGenreId = selectedGenreId;
-        dataTable.setFirst(0);
+        getDataTable().setFirst(0);
     }
 
     private void fillBooksAll() {
@@ -104,7 +105,7 @@ public class BookListController implements Serializable {
         ResourceBundle bundle = ResourceBundle.getBundle("by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.nls.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(bundle.getString("updated")));
 
-        dataTable.setFirst(calcSelectedPage());
+        getDataTable().setFirst(calcSelectedPage());
 
     }
 
@@ -115,7 +116,7 @@ public class BookListController implements Serializable {
         ResourceBundle bundle = ResourceBundle.getBundle("by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.nls.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(bundle.getString("deleted")));
 
-        dataTable.setFirst(calcSelectedPage());
+        getDataTable().setFirst(calcSelectedPage());
 
     }
 
@@ -145,7 +146,7 @@ public class BookListController implements Serializable {
     }
 
     private int calcSelectedPage() {
-        int page = dataTable.getPage();// текущий номер страницы (индексация с нуля)
+        int page = getDataTable().getPage();// текущий номер страницы (индексация с нуля)
 
         int leftBound = pager.getTo() * (page - 1);
         int rightBound = pager.getTo() * page;
@@ -211,13 +212,6 @@ public class BookListController implements Serializable {
         return bookListModel;
     }
 
-    public DataTable getDataTable() {
-        return dataTable;
-    }
-
-    public void setDataTable(DataTable dataTable) {
-        this.dataTable = dataTable;
-    }
 
     /**
      * @return the selectedBook
@@ -231,6 +225,20 @@ public class BookListController implements Serializable {
      */
     public void setSelectedBook(Book selectedBook) {
         this.selectedBook = selectedBook;
+    }
+
+    /**
+     * @return the dataTable
+     */
+    public DataGrid getDataTable() {
+        return dataTable;
+    }
+
+    /**
+     * @param dataTable the dataTable to set
+     */
+    public void setDataTable(DataGrid dataTable) {
+        this.dataTable = dataTable;
     }
 
 }
