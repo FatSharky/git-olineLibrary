@@ -6,30 +6,39 @@ and open the template in the editor.
 -->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
     <h:head>
         <title>Facelet Title</title>
-        <h:outputStylesheet library="css" name="style_main.css"  />
     </h:head>
-<h:body>
+    <h:body>
         <ui:composition>
 
-            <div class="locales">
-                <h:form>
 
-                    <h:commandLink action="#{localeChanger.changeLocale('en')}">
-                        <h:graphicImage library="images" name="eng.png" title="#{msg.english}" />
+            <div class="lang">
 
+
+                <h:form style="display: inline;">
+
+                    <h:commandLink  actionListener="#{localeChanger.changeLocale('ru')}">
+                        <h:graphicImage styleClass="#{localeChanger.currentLocale == 'ru' ? 'active':''}" library="images" name="rus.png" title="#{msg.russian}" width="16" height="13"/>                        
                     </h:commandLink>
-                    <h:commandLink action = "#{localeChanger.changeLocale('ru')}">
-                        <h:graphicImage library="images" name="rus.png" title="#{msg.russian}"/>
 
+
+                    <h:commandLink actionListener="#{localeChanger.changeLocale('en')}">
+                        <h:graphicImage styleClass="#{localeChanger.currentLocale == 'en' ? 'active':''}"  library="images" name="usa.png" title="#{msg.english}" width="16" height="13"/>                        
                     </h:commandLink>
+
+
 
                 </h:form>
+
+
             </div>
+
+
+
 
         </ui:composition>
     </h:body>
