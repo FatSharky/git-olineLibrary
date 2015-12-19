@@ -8,8 +8,8 @@
     <h:head>
         <title>Facelet Title</title>
         <h:outputStylesheet library="css" name="style_main.css"  />
-    </h:head>
-   <h:body>
+ </h:head>
+    <h:body>
         <ui:composition>
 
             <h4>#{msg.genres}</h4>
@@ -17,7 +17,7 @@
             <h:form styleClass="genres" id="genresForm">
                 <ui:repeat value="#{genreController.genreList}" var="g">
 
-                    <p:commandLink update=":booksForm:admin_tools :booksForm:booksList @form :lettersForm   :booksCount" value="#{g.name}" styleClass="#{g.id == bookListController.selectedGenreId ? 'selected_link':''}" actionListener="#{bookListController.fillBooksByGenre()}">
+                    <p:commandLink update=":booksForm:booksList @form :lettersForm :booksCount" value="#{g.name}" styleClass="#{g.id == bookListController.selectedGenreId ? 'selected_link':''}" actionListener="#{bookListController.fillBooksByGenre()}">
                         <f:param name="genre_id" value="#{g.id}" />
                     </p:commandLink>
 

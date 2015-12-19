@@ -1,16 +1,8 @@
-function checkValue(form, message) {
+function showProgress(){
     
-    var userInput = form[form.id + ":username"];
+  
+    btnUpdateBook.disabled=true;
+
     
-    if (userInput.value ==''){
-        alert(message)
-        userInput.focus();
-        return false;
-    } 
-    
-    return true;
 }
-
-
-
 
