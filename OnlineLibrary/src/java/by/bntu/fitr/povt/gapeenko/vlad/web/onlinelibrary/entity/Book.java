@@ -6,6 +6,8 @@ package by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.entity;
  */
 public class Book implements java.io.Serializable {
 
+    private boolean imageEdited;
+    private boolean contentEdited;
     private boolean edit;
     private Long id;
     private Author author;
@@ -145,6 +147,34 @@ public class Book implements java.io.Serializable {
      */
     public void setEdit(boolean edit) {
         this.edit = edit;
+    }
+
+    /**
+     * @return the imageEdited
+     */
+    public boolean isImageEdited() {
+        return imageEdited;
+    }
+
+    /**
+     * @param imageEdited the imageEdited to set
+     */
+    public void setImageEdited(boolean imageEdited) {
+        this.imageEdited = imageEdited;
+    }
+
+    /**
+     * @return the contentEdited
+     */
+    public boolean isContentEdited() {
+        return contentEdited;
+    }
+
+    /**
+     * @param contentEdited the contentEdited to set
+     */
+    public void setContentEdited(boolean contentEdited) {
+        this.contentEdited = contentEdited;
     }
 
 }

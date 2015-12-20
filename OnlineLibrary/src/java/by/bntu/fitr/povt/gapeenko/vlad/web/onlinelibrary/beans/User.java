@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.beans;
+
 import java.io.Serializable;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -46,9 +47,9 @@ public class User implements Serializable {
     }
 
     public String login() {
-        
+
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        
+
         try {
 
             try {
@@ -56,14 +57,10 @@ public class User implements Serializable {
             } catch (Exception e) {
             }
 
-            
-
-            if (request.getUserPrincipal()==null || (request.getUserPrincipal()!=null && !request.getUserPrincipal().getName().equals(username))) {
+            if (request.getUserPrincipal() == null || (request.getUserPrincipal() != null && !request.getUserPrincipal().getName().equals(username))) {
                 request.logout();
                 request.login(username, password);
             }
-
-
 
             return "books";
         } catch (ServletException ex) {
@@ -72,7 +69,7 @@ public class User implements Serializable {
             FacesContext context = FacesContext.getCurrentInstance();
             FacesMessage message = new FacesMessage(bundle.getString("login_error"));
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
-            context.addMessage("login_form", message);            
+            context.addMessage("login_form", message);
         }
 
         return "index";
@@ -94,5 +91,13 @@ public class User implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
 
         return result;
+    }
+
+    public String goHome() {
+        return "/index.xhtml?faces-redirect=true";
+    }
+
+    public String goBooks() {
+        return "/pages/books.xhtml?faces-redirect=true";
     }
 }

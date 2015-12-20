@@ -56,7 +56,7 @@ public class BookListController implements Serializable {
     }
 
     private void fillBooksAll() {
-        dataHelper.getAllBooks();
+        getDataHelper().getAllBooks();
     }
 
     public void fillBooksByGenre() {
@@ -64,7 +64,7 @@ public class BookListController implements Serializable {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         selectedGenreId = Long.valueOf(params.get("genre_id"));
         submitValues(' ', selectedGenreId);
-        dataHelper.getBooksByGenre(selectedGenreId);
+        getDataHelper().getBooksByGenre(selectedGenreId);
 
     }
 
@@ -73,7 +73,7 @@ public class BookListController implements Serializable {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         selectedLetter = params.get("letter").charAt(0);
         submitValues(selectedLetter, -1);
-        dataHelper.getBooksByLetter(selectedLetter);
+        getDataHelper().getBooksByLetter(selectedLetter);
 
     }
 
@@ -87,20 +87,20 @@ public class BookListController implements Serializable {
         }
 
         if (selectedSearchType == SearchType.AUTHOR) {
-            dataHelper.getBooksByAuthor(currentSearchString);
+            getDataHelper().getBooksByAuthor(currentSearchString);
         } else if (selectedSearchType == SearchType.TITLE) {
-            dataHelper.getBooksByName(currentSearchString);
+            getDataHelper().getBooksByName(currentSearchString);
         }
 
     }
 
     public void updateBook() {
 
-        dataHelper.updateBook(getSelectedBook());
+        getDataHelper().updateBook(getSelectedBook());
         cancelEditMode();
-        dataHelper.populateList();
+        getDataHelper().populateList();
 
-        RequestContext.getCurrentInstance().execute("dlgEditBook.hide()");
+        RequestContext.getCurrentInstance().execute("PF('dlgEditBook').hide()");
 
         ResourceBundle bundle = ResourceBundle.getBundle("by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.nls.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(bundle.getString("updated")));
@@ -110,8 +110,8 @@ public class BookListController implements Serializable {
     }
 
     public void deleteBook() {
-        dataHelper.deleteBook(getSelectedBook());
-        dataHelper.populateList();
+        getDataHelper().deleteBook(getSelectedBook());
+        getDataHelper().populateList();
 
         ResourceBundle bundle = ResourceBundle.getBundle("by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.nls.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(bundle.getString("deleted")));
@@ -239,6 +239,20 @@ public class BookListController implements Serializable {
      */
     public void setDataTable(DataGrid dataTable) {
         this.dataTable = dataTable;
+    }
+
+    /**
+     * @return the dataHelper
+     */
+    public DataHelper getDataHelper() {
+        return dataHelper;
+    }
+
+    /**
+     * @param dataHelper the dataHelper to set
+     */
+    public void setDataHelper(DataHelper dataHelper) {
+        this.dataHelper = dataHelper;
     }
 
 }
