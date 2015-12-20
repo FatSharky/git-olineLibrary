@@ -9,7 +9,7 @@ and open the template in the editor.
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
-    <h:head>
+   <h:head>
         <title>Facelet Title</title>
     </h:head>
     <h:body>
@@ -22,10 +22,10 @@ and open the template in the editor.
                     <p:panel id="imagePanel">
 
                         <p:graphicImage  value="#{imageController.defaultImage}" width="110" height="150" id="bookImage"/>
-                        <h:form enctype="multipart/form-data" id="formUpload">
-                            <p:fileUpload id="imageUpload" label="#{msg.load}" fileUploadListener="#{imageController.handleFileUpload}" update="bookNewImage messages" sizeLimit="#{imageController.imageMaxSize}" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" multiple="false" auto="true"/>  
+                        <h:form enctype="multipart/form-data" id="formUploadImage" >
+                            <p:fileUpload id="imageUpload" label="#{msg.load}" fileUploadListener="#{imageController.handleFileUpload}" update="messagesImage bookNewImage" sizeLimit="#{imageController.imageMaxSize}" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" multiple="false" auto="true"/>  
                             <p:graphicImage value="#{imageController.uploadedImage}" library="images" width="110" height="150" id="bookNewImage"/>
-                            <p:messages id="messages" showDetail="true"/>
+                            <p:messages id="messagesImage" showDetail="true" for="formUploadImage"/>
                         </h:form>
 
                     </p:panel>
@@ -78,6 +78,25 @@ and open the template in the editor.
 
                             <p:inputText id="inputPageCount" value="#{bookListController.selectedBook.pageCount}" required="true" />  
 
+                            <p:outputLabel value="#{msg.text}:" styleClass="edit-title"/>
+
+                            <h:outputLink value="#{request.contextPath}/PdfContent"  target="_blank" styleClass="pdf-link">                                                             
+                                <p:outputLabel value="#{msg.show_pdf}"/>
+                                <f:param name="id" value="#{bookListController.selectedBook.id}"/>
+                            </h:outputLink> 
+
+                            <p:outputLabel/>
+
+                            <h:form enctype="multipart/form-data" id="formUploadPdf">
+
+                                <p:fileUpload  id="pdfUpload" label="#{msg.load_pdf}" fileUploadListener="#{contentController.handleFileUpload}" update="messages-pdf @form" allowTypes="/(\.|\/)(pdf)$/" multiple="false" auto="true" styleClass="pdf-upload"/>  
+                                <h:outputLink id="uploadedPdfLink" value="#{request.contextPath}/UploadedPdf"  target="_blank" styleClass="pdf-link" rendered="#{contentController.showContent}">                                                             
+                                    <p:outputLabel value="#{msg.show_uploaded_pdf}"/>
+                                </h:outputLink> 
+                                <p:messages id="messages-pdf" showDetail="true" for="formUploadPdf"/>
+                            </h:form>
+
+
 
                             <p:outputLabel value="#{msg.descr}:" styleClass="edit-title"/>
 
@@ -89,8 +108,17 @@ and open the template in the editor.
 
                             <f:facet name="footer">
 
-                                <p:commandButton styleClass="button-update" value="#{msg.save}" icon="ui-icon-check"  onclick="this.disabled = true;" update=":formEditBook :booksForm:booksList :booksCount :growlMessage" action="#{bookListController.updateBook}" actionListener="#{imageController.updateImage()}"/>
-                                <p:commandButton action="#{bookListController.cancelEditMode()}" actionListener="#{imageController.clearImage()}" icon="ui-icon-close"  value="#{msg.cancel}" immediate="true" global="false"/>    
+                                <p:commandButton styleClass="button-update" value="#{msg.save}" icon="ui-icon-check"  onclick="this.disabled=true;" update=":formEditBook :booksForm:booksList :booksCount :growlMessage">
+                                    <f:actionListener binding="#{imageController.saveListener()}"/>     
+                                    <f:actionListener binding="#{contentController.saveListener()}"/>     
+                                    <f:actionListener binding="#{bookListController.saveListener()}"/>     
+                                </p:commandButton>
+                                <p:commandButton action="#{bookListController.cancelModes()}" icon="ui-icon-close"  value="#{msg.cancel}" immediate="true" global="false">
+                                    <f:actionListener binding="#{imageController.clearListener()}"/>     
+                                    <f:actionListener binding="#{contentController.clearListener()}"/>     
+
+                                </p:commandButton>    
+
 
                             </f:facet>
 

@@ -15,6 +15,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
+import javax.faces.event.ActionEvent;
+import javax.faces.event.ActionListener;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
@@ -97,5 +99,30 @@ public class ImageController implements Serializable {
 
     public byte[] getUploadedImageBytes() {
         return uploadedImage;
+    }
+      public ActionListener saveListener() {
+        return new ActionListener() {
+            @Override
+            public void processAction(ActionEvent event) {
+                if (uploadedImage != null) {
+                    bookListController.getSelectedBook().setImage(uploadedImage);
+                    bookListController.getSelectedBook().setImageEdited(true);
+                }
+                clear();
+            }
+        };
+    }
+
+    public ActionListener clearListener() {
+        return new ActionListener() {
+            @Override
+            public void processAction(ActionEvent event) {
+                clear();
+            }
+        };
+    }
+
+    public void clear() {
+        uploadedImage = null;
     }
 }

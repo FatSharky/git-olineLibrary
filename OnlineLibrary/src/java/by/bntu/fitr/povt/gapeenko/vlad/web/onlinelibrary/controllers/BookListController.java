@@ -17,6 +17,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+import javax.faces.event.ActionListener;
 import javax.faces.event.ValueChangeEvent;
 import org.primefaces.component.datagrid.DataGrid;
 import org.primefaces.component.datatable.DataTable;
@@ -42,7 +44,9 @@ public class BookListController implements Serializable {
     private long selectedGenreId; // выбранный жанр
     private String currentSearchString; // хранит поисковую строку
     private Pager pager = Pager.getInstance();
-    //-------
+    private boolean addModeView;// отображение режима добавление    
+
+//-------
     private boolean editModeView;// отображение режима редактирования
 
     public BookListController() {
@@ -212,7 +216,6 @@ public class BookListController implements Serializable {
         return bookListModel;
     }
 
-
     /**
      * @return the selectedBook
      */
@@ -255,4 +258,31 @@ public class BookListController implements Serializable {
         this.dataHelper = dataHelper;
     }
 
+    public void cancelModes() {
+        if (addModeView) {
+            addModeView = false;
+        }
+
+        if (editModeView) {
+            editModeView = false;
+        }
+
+        RequestContext.getCurrentInstance().execute("dlgEditBook.hide()");
+    }
+
+    public ActionListener saveListener() {
+        return new ActionListener() {
+            @Override
+            public void processAction(ActionEvent event) {
+                dataHelper.updateBook(selectedBook);
+                cancelModes();
+                dataHelper.populateList();
+
+                ResourceBundle bundle = ResourceBundle.getBundle("by.bntu.fitr.povt.gapeenko.vlad.web.onlinelibrary.nls.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(bundle.getString("updated")));
+
+                dataTable.setFirst(calcSelectedPage());
+            }
+        };
+    }
 }
